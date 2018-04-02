@@ -1,0 +1,32 @@
+#!/bin/bash
+#@nanopc   2015
+
+#Your tools directory
+diremulator="/path/to/android-sdk-linux/tools/"
+cd  $diremulator
+
+#SetUp enviroment
+# Job control is enabled (see Job Control). All processes run in a separate process group. When a background job completes, the shell prints a line containing its exit status.
+# set +m # http://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html#The-Set-Builtin
+
+# Enable (set) each optname.
+shopt -s lastpipe #http://www.gnu.org/software/bash/manual/html_node/The-Shopt-Builtin.html
+
+#Previously created emulators list
+./emulator -list-avds | while IFS= read -r line; do lines[i]="$line"; ((i++)); done
+
+#Number of emulators
+size=${#lines[@]}
+
+echo -e "\e[1;33m  Pick a number  \e[0m"
+
+for (( i=0; i<${size}; i++ ));
+do
+  echo "$i :${lines[$i]}"
+done
+
+read OPTION
+
+./emulator -avd ${lines[$OPTION]}
+
+
